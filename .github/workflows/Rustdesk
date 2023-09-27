@@ -1,0 +1,35 @@
+name: Continuous RDP
+
+on:
+  workflow_run:
+    workflows: ["rdp-session"]
+    types:
+      - completed
+
+jobs:
+  build:
+    name: Start RDP Session
+    runs-on: windows-latest
+
+    steps:
+      - name: Start RDP
+        run: |
+          # Replace 'your-rdp-command' with the actual command to start your RDP session.
+          # For example, use 'mstsc.exe' or another RDP client command.
+          # You may need to provide connection details like server IP and credentials.
+          your-rdp-command
+
+  keep_alive:
+    name: Keep RDP Session Alive
+    needs: build
+    runs-on: windows-latest
+
+    steps:
+      - name: Wait for Session to Disconnect
+        run: Start-Sleep -Seconds 300  # Wait for 5 minutes after the initial RDP session.
+
+      - name: Restart RDP Session
+        run: |
+          # Replace 'your-rdp-command' with the actual command to start your RDP session.
+          # This will restart the RDP session every 5 minutes.
+          your-rdp-command
